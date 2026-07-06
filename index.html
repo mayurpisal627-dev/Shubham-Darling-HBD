@@ -2,25 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday Shubham!</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: #050510; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', sans-serif;
+            touch-action: pan-x pan-y;
+        }
         
-        /* Fast Neon Blue Background Layer */
+        body { 
+            background: #050510; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden; 
+            position: relative;
+        }
+        
+        /* Neon Blue Background Layers */
         .liquid-bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: radial-gradient(circle at 50% 50%, #001133, #050510); z-index: 1; }
-        .blob { position: absolute; background: linear-gradient(45deg, #00d2ff, #0066ff); border-radius: 50%; filter: blur(50px); opacity: 0.35; transform: translate3d(0,0,0); animation: float-liquid 12s infinite alternate ease-in-out; }
-        .blob:nth-child(1) { width: 300px; height: 300px; top: -10%; left: -10%; }
-        .blob:nth-child(2) { width: 380px; height: 380px; bottom: -10%; right: -10%; animation-duration: 15s; }
-        .blob:nth-child(3) { width: 220px; height: 220px; top: 50%; left: 10%; animation-duration: 9s; }
+        .blob { position: absolute; background: linear-gradient(45deg, #00d2ff, #0066ff); border-radius: 50%; filter: blur(60px); opacity: 0.35; transform: translate3d(0,0,0); animation: float-liquid 12s infinite alternate ease-in-out; }
+        .blob:nth-child(1) { width: 40vw; height: 40vw; top: -10%; left: -10%; }
+        .blob:nth-child(2) { width: 45vw; height: 45vw; bottom: -10%; right: -10%; animation-duration: 15s; }
+        .blob:nth-child(3) { width: 30vw; height: 30vw; top: 50%; left: 5%; animation-duration: 9s; }
 
         @keyframes float-liquid {
             0% { transform: translate(0, 0) scale(1); border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
             100% { transform: translate(30px, -20px) scale(1.08); border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%; }
         }
 
-        /* Pure CSS High-Performance Falling Balls Layer */
+        /* High-Performance Falling Balls Layer */
         .balls-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2; pointer-events: none; display: none; }
         .falling-ball { position: absolute; border-radius: 50%; opacity: 0.7; transform: translate3d(0, -20px, 0); animation: fallLinear linear infinite; filter: drop-shadow(0 0 10px var(--bcolor)); }
         
@@ -29,13 +44,54 @@
             100% { transform: translate3d(0, 105vh, 0); }
         }
 
-        /* Box Layout Container */
-        .quiz-container { position: relative; z-index: 3; background: rgba(20, 20, 35, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 28px; padding: 40px 30px; width: 90%; max-width: 410px; text-align: center; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); transition: all 0.3s ease; }
-        .quiz-container.vibrate { animation: waveVibrate 0.35s ease-in-out; }
-        @keyframes waveVibrate { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+        /* Fully Responsive Layout Container (Mobile First) */
+        .quiz-container { 
+            position: relative; 
+            z-index: 3; 
+            background: rgba(20, 20, 35, 0.72); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.12); 
+            border-radius: 28px; 
+            padding: 35px 25px; 
+            width: 90%; 
+            max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1); 
+        }
+        
+        /* Tablets (Portrait & Landscape) aur iPads ke liye special optimization */
+        @media (min-width: 600px) {
+            .quiz-container {
+                max-width: 520px; /* Card size bade screens par bada hoga */
+                padding: 55px 45px;
+                border-radius: 36px;
+            }
+            h2 { font-size: 1.65rem !important; margin-bottom: 35px !important; }
+            .btn { padding: 18px 25px !important; font-size: 1.15rem !important; border-radius: 16px !important; }
+            input[type="text"] { padding: 18px !important; font-size: 1.15rem !important; border-radius: 16px !important; }
+            .main-heading { font-size: 2.5rem !important; }
+            .sub-heading { font-size: 1.35rem !important; }
+            .shayari-text { font-size: 1.1rem !important; }
+            .gift-emoji { font-size: 8rem !important; }
+        }
 
-        h2 { color: #fff; margin-bottom: 25px; font-size: 1.35rem; text-shadow: 0 0 10px rgba(0,210,255,0.4); }
-        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        /* Laptops aur badi desktop screens ke liye layout breakpoint */
+        @media (min-width: 1024px) {
+            .quiz-container {
+                max-width: 560px;
+                padding: 60px 50px;
+            }
+            h2 { font-size: 1.8rem !important; }
+            .btn { font-size: 1.2rem !important; }
+        }
+        
+        .quiz-container.vibrate { animation: waveVibrate 0.35s ease-in-out; }
+        @keyframes waveVibrate { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+        h2 { color: #fff; margin-bottom: 25px; font-size: 1.35rem; text-shadow: 0 0 10px rgba(0,210,255,0.4); font-weight: 600; }
+        .options-grid { display: flex; flex-direction: column; gap: 20px; }
         
         .btn { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.15); padding: 15px 20px; border-radius: 14px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.2s ease; outline: none; }
         .btn:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.3); }
@@ -44,8 +100,8 @@
         input[type="text"] { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.4); color: #fff; font-size: 1rem; text-align: center; outline: none; margin-bottom: 20px; }
         input[type="text"]:focus { border-color: #00d2ff; }
         
-        .confirm-btn { display: none; background: linear-gradient(45deg, #00cc66, #00ff88); color: white; border: none; width: 100%; margin-top: 15px; }
-        .error-msg { color: #ff4a4a; margin-top: 15px; font-size: 1.05rem; font-weight: 500; display: none; }
+        .confirm-btn { display: none; background: linear-gradient(45deg, #00cc66, #00ff88); color: white; border: none; width: 100%; margin-top: 20px; }
+        .error-msg { color: #ff4a4a; margin-top: 20px; font-size: 1.05rem; font-weight: 500; display: none; }
         
         .gift-box { display: none; }
         .gift-emoji { font-size: 6rem; cursor: pointer; display: inline-block; animation: bounceGift 1.2s infinite alternate ease-in-out; }
@@ -53,7 +109,7 @@
         
         /* Surprise Area */
         .surprise-box { display: none; }
-        .cake-img { font-size: 3rem; margin-bottom: 12px; display: block; }
+        .cake-img { font-size: 3.5rem; margin-bottom: 12px; display: block; }
         .sub-heading { color: #ffffff; font-size: 1.2rem; font-weight: 600; margin-bottom: 6px; opacity: 0.95; }
         .main-heading { font-size: 2rem; font-weight: 800; letter-spacing: 1px; line-height: 1.25; margin-bottom: 25px; }
         .name-shubham { color: #5ce6e6; }
@@ -63,19 +119,17 @@
         .shayari-text { color: #e5e7eb; font-size: 0.95rem; font-weight: 500; line-height: 1.7; text-align: center; }
         .from-tag { color: #22d3ee; font-size: 1.15rem; font-weight: 700; margin-bottom: 25px; }
         
-        .splash-btn { background: linear-gradient(45deg, #ff5e3a, #ff2a6d); color: white; border: none; padding: 14px 32px; font-size: 0.95rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 42, 109, 0.4); display: inline-flex; align-items: center; gap: 6px; }
+        .splash-btn { background: linear-gradient(45deg, #ff5e3a, #ff2a6d); color: white; border: none; padding: 15px 35px; font-size: 1rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 42, 109, 0.4); display: inline-flex; align-items: center; gap: 6px; }
         .screenshot-footer { margin-top: 30px; font-size: 0.8rem; color: #00d2ff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 20px; opacity: 0.8; }
     </style>
 </head>
 <body>
-    <!-- Questions Background -->
     <div class="liquid-bg">
         <div class="blob"></div>
         <div class="blob"></div>
         <div class="blob"></div>
     </div>
 
-    <!-- Optimized Falling Balls Container -->
     <div class="balls-container" id="ballsLayer"></div>
     
     <div class="quiz-container" id="cardContainer">
@@ -99,7 +153,7 @@
                 <span class="name-darling">DARLING!</span>
             </div>
             <div class="shayari-box">
-                <p class="shayari-text">Kismat walon ko milti hai aisi dosti jahan jigar milte hain,<br>Hum bohot khush-naseeb hain jo tere jaise yaar milte hain.<br>Janmadin ki dheron shubh-kamnayein Shubham,<br>Hamesha khush reh aur aise hi mehfil jamata reh! 🥂✨</p>
+                <p class="shayari-text">Kismat walon ko milti hai aisi dosti jahan jigar milte hain,<br>Hum bohot khush-naseeb hain jo tere jaise yaar milte hain.<br>Janmadin ki dheron shubh-kamnayein Shubham,<br>Hamesha khush reh aur aise hi mehfil jamata reh! 2nd std std 🥂✨</p>
             </div>
             <div class="from-tag">From: Mayur ❤️</div>
             <button class="splash-btn" onclick="spawnMoreBalls()">Splash More Fluid! ⚡</button>
@@ -109,11 +163,21 @@
         </div>
     </div>
     <script>
+        document.addEventListener('touchstart', function (event) {
+            if (event.touches.length > 1) { event.preventDefault(); }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            let now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) { event.preventDefault(); }
+            lastTouchEnd = now;
+        }, false);
+
         const questions = [
             { type: "mcq", question: "1) Best friend name?", options: ["Shubham V", "Mayur"], correct: "Mayur" },
             { type: "mcq", question: "2) Best friend's Date of Birth?", options: ["9/4/2008", "4/9/2009"], correct: "9/4/2008" },
-            // Yeh sawaal aur options ab badal diye gaye hain
-            { type: "mcq", question: "3) Where we first meet in which standard?", options: ["1st std", "2nd std"], correct: "2nd std" },
+            { type: "mcq", question: "3) Where we first meet in which standard?", options: ["1st", "2nd std"], correct: "2nd std" },
             { type: "text", question: "4) Who is your current best friend?", correct: "Mayur" }
         ];
 
@@ -136,7 +200,7 @@
             const ball = document.createElement('div');
             ball.className = 'falling-ball';
             
-            const size = Math.floor(Math.random() * 8) + 8;
+            const size = Math.floor(Math.random() * 10) + 8; // Size thoda optimize kiya bade screens ke liye
             const color = colors[Math.floor(Math.random() * colors.length)];
             const leftPos = Math.random() * 96; 
             const duration = Math.random() * 2 + (isSplash ? 1.5 : 2.5); 
@@ -148,27 +212,21 @@
             ball.style.setProperty('--bcolor', color);
             ball.style.animationDuration = `${duration}s`;
 
-            if (isSplash) {
-                ball.style.top = `${Math.random() * 20}%`;
-            }
-
+            if (isSplash) { ball.style.top = `${Math.random() * 20}%`; }
             ballsLayer.appendChild(ball);
-
             setTimeout(() => { ball.remove(); }, duration * 1000);
         }
 
         function startFallingEngine() {
             ballsLayer.style.display = 'block';
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 35; i++) {
                 setTimeout(() => { createBall(); }, Math.random() * 3000);
             }
-            setInterval(() => { createBall(); }, 120);
+            setInterval(() => { createBall(); }, 100);
         }
 
         function spawnMoreBalls() {
-            for (let i = 0; i < 25; i++) {
-                createBall(true);
-            }
+            for (let i = 0; i < 30; i++) { createBall(true); }
         }
 
         function loadQuestion() {
@@ -240,7 +298,6 @@
             surpriseBox.style.display = 'block';
             cardContainer.style.borderColor = '#ff2a6d';
             cardContainer.style.boxShadow = '0 25px 60px rgba(255, 42, 109, 0.3)';
-            
             startFallingEngine();
             spawnMoreBalls();
         }
