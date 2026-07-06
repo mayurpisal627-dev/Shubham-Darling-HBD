@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Shubham!</title>
+    <!-- Confetti Library -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: #050510; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        
+        /* Neon Blue Liquid Background Layer (For Questions Page) */
+        .liquid-bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: radial-gradient(circle at 50% 50%, #001133, #050510); z-index: 1; }
+        .blob { position: absolute; background: linear-gradient(45deg, #00d2ff, #0066ff, #00ffcc); border-radius: 50%; filter: blur(50px); opacity: 0.45; animation: float-liquid 10s infinite alternate ease-in-out; }
+        .blob:nth-child(1) { width: 350px; height: 350px; top: -10%; left: -10%; animation-duration: 12s; }
+        .blob:nth-child(2) { width: 450px; height: 450px; bottom: -10%; right: -10%; animation-duration: 15s; }
+        .blob:nth-child(3) { width: 280px; height: 280px; top: 50%; left: 15%; animation-duration: 8s; }
+
+        @keyframes float-liquid {
+            0% { transform: translateY(0) scale(1) rotate(0deg); border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+            50% { transform: translateY(40px) scale(1.15) rotate(120deg); border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; }
+            100% { transform: translateY(-30px) scale(0.95) rotate(240deg); border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+        }
+
+        /* Canvas for Smooth Falling Colorful Balls (For Surprise Page) */
+        #fluidCanvas { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2; pointer-events: none; }
+        
+        /* Dark Matte Fluid Container Matches Image Exactly */
+        .quiz-container { position: relative; z-index: 3; background: rgba(20, 20, 35, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 28px; padding: 40px 30px; width: 90%; max-width: 410px; text-align: center; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.1); transition: all 0.4s ease; }
+        
+        /* Vibration Effect for Wrong Answer */
+        .quiz-container.vibrate { animation: waveVibrate 0.4s ease-in-out; }
+        @keyframes waveVibrate { 0%, 100% { transform: translateX(0); } 15%, 55% { transform: translateX(-8px); } 35%, 75% { transform: translateX(8px); } }
+
+        h2 { color: #fff; margin-bottom: 25px; font-size: 1.35rem; text-shadow: 0 0 10px rgba(0,210,255,0.4); }
+        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        
+        .btn { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.15); padding: 15px 20px; border-radius: 14px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.2s ease; outline: none; }
+        .btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.4); }
+        .btn.selected { background: rgba(0, 210, 255, 0.25); border-color: #00d2ff; box-shadow: 0 0 15px rgba(0,210,255,0.3); }
+        
+        input[type="text"] { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.4); color: #fff; font-size: 1rem; text-align: center; outline: none; margin-bottom: 20px; }
+        input[type="text"]:focus { border-color: #00d2ff; }
+        
+        .confirm-btn { display: none; background: linear-gradient(45deg, #00cc66, #00ff88); color: white; border: none; width: 100%; margin-top: 15px; animation: popUp 0.3s ease-out; }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .error-msg { color: #ff4a4a; margin-top: 15px; font-size: 1.05rem; font-weight: 500; display: none; }
+        .gift-box { display: none; }
+        .gift-emoji { font-size: 6rem; cursor: pointer; display: inline-block; animation: bounceGift 1.2s infinite alternate ease-in-out; }
+        @keyframes bounceGift { 0% { transform: scale(1); } 100% { transform: scale(1.1) translateY(-8px); filter: drop-shadow(0 0 20px rgba(0,210,255,0.5)); } }
+        
+        /* Surprise Area Styling */
+        .surprise-box { display: none; }
+        .cake-img { font-size: 3rem; margin-bottom: 12px; display: block; filter: drop-shadow(0 0 10px rgba(255,165,0,0.4)); }
+        .sub-heading { color: #ffffff; font-size: 1.2rem; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.5px; opacity: 0.95; }
+        .main-heading { font-size: 2rem; font-weight: 800; letter-spacing: 1px; line-height: 1.25; margin-bottom: 25px; }
+        .name-shubham { color: #5ce6e6; text-shadow: 0 0 15px rgba(92,230,230,0.3); }
+        .name-darling { color: #4ade80; text-shadow: 0 0 15px rgba(74,222,128,0.3); }
+        
+        .shayari-box { margin-bottom: 25px; padding: 0 5px; }
+        .shayari-text { color: #e5e7eb; font-size: 0.95rem; font-weight: 500; line-height: 1.7; text-align: center; }
+        .from-tag { color: #22d3ee; font-size: 1.15rem; font-weight: 700; margin-bottom: 25px; text-shadow: 0 0 10px rgba(34,211,238,0.2); }
+        
+        /* Button Exactly Like the Image */
+        .splash-btn { background: linear-gradient(45deg, #ff5e3a, #ff2a6d); color: white; border: none; padding: 14px 32px; font-size: 0.95rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 42, 109, 0.4); display: inline-flex; align-items: center; gap: 6px; transition: transform 0.1s; }
+        .splash-btn:active { transform: scale(0.95); }
+        
+        .screenshot-footer { margin-top: 30px; font-size: 0.8rem; color: #00d2ff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 20px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <!-- Questions Background Liquid Blobs -->
+    <div class="liquid-bg">
+        <div class="blob"></div>
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+
+    <!-- Surprise Background Falling Balls -->
+    <canvas id="fluidCanvas"></canvas>
+    
+    <div class="quiz-container" id="cardContainer">
+        <!-- Questions Loop -->
+        <div id="quizBox">
+            <h2 id="questionText">Loading...</h2>
+            <div id="answerArea"></div>
+            <button class="btn confirm-btn" id="confirmBtn" onclick="processConfirm()">Confirm Jawab ✔</button>
+            <div class="error-msg" id="errorMsg">Galat jawab! Phir se koshish karo. 🤔</div>
+        </div>
+
+        <!-- Gift Unlock Area -->
+        <div id="giftBox" class="gift-box">
+            <div class="gift-emoji" onclick="openSurprise()">🎁</div>
+            <h3 style="color:#fff; margin-top:15px; font-weight: 600;">Tap on the Gift to Unlock Surprise!</h3>
+        </div>
+
+        <!-- Surprise Area -->
+        <div id="surpriseBox" class="surprise-box">
+            <span class="cake-img">🎂</span>
+            <div class="sub-heading">Happy 17th Birthday</div>
+            <div class="main-heading">
+                <span class="name-shubham">SHUBHAM</span><br>
+                <span class="name-darling">DARLING!</span>
+            </div>
+            <div class="shayari-box">
+                <p class="shayari-text">Kismat walon ko milti hai aisi dosti jahan jigar milte hain,<br>Hum bohot khush-naseeb hain jo tere jaise yaar milte hain.<br>Janmadin ki dheron shubh-kamnayein Shubham,<br>Hamesha khush reh aur aise hi mehfil jamata reh! 🥂✨</p>
+            </div>
+            <div class="from-tag">From: Mayur ❤️</div>
+            <button class="splash-btn" onclick="fireMoreConfetti()">Splash More Fluid! ⚡</button>
+            <div class="screenshot-footer">
+                agar suprise khul gaya to screenshot send karo
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { type: "mcq", question: "1) Best friend name?", options: ["Shubham V", "Mayur"], correct: "Mayur" },
+            { type: "mcq", question: "2) Best friend's Date of Birth?", options: ["9/4/2008", "4/9/2009"], correct: "9/4/2008" },
+            { type: "mcq", question: "3) Where did we first meet?", options: ["None of these", "School"], correct: "School" },
+            { type: "text", question: "4) Who is your current best friend?", correct: "Mayur" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedAnswer = "";
+        let animationActive = false;
+
+        const cardContainer = document.getElementById('cardContainer');
+        const questionText = document.getElementById('questionText');
+        const answerArea = document.getElementById('answerArea');
+        const errorMsg = document.getElementById('errorMsg');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const quizBox = document.getElementById('quizBox');
+        const giftBox = document.getElementById('giftBox');
+        const surpriseBox = document.getElementById('surpriseBox');
+
+        // Canvas Setup for Colorful Falling Balls Animation
+        const canvas = document.getElementById('fluidCanvas');
+        const ctx = canvas.getContext('2d');
+        let balls = [];
+        const colors = ['#ff2a6d', '#05d9e8', '#01012b', '#f5a623', '#b8e986', '#f8e71c', '#ff5e3a', '#4ade80', '#22d3ee'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Ball {
+            constructor(x, y, isSplash = false) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || (isSplash ? Math.random() * (canvas.height * 0.3) : -20);
+                this.radius = Math.random() * 8 + 6;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.speedY = Math.random() * 1.5 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.4 + 0.4;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                if (this.y - this.radius > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+            }
+        }
+
+        function startBallAnimation() {
+            if (animationActive) return;
+            animationActive = true;
+
+            for (let i = 0; i < 35; i++) {
+                balls.push(new Ball(null, Math.random() * canvas.height));
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.shadowBlur = 0;
+                balls.forEach(ball => {
+                    ball.update();
+                    ball.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Quiz Logic Code
+        function loadQuestion() {
+            errorMsg.style.display = 'none';
+            confirmBtn.style.display = 'none';
+            selectedAnswer = "";
+            
+            let currentQ = questions[currentQuestionIndex];
+            questionText.innerText = currentQ.question;
+            answerArea.innerHTML = "";
+
+            if (currentQ.type === "mcq") {
+                let optionsGrid = document.createElement('div');
+                optionsGrid.className = 'options-grid';
+                currentQ.options.forEach(opt => {
+                    let btn = document.createElement('button');
+                    btn.className = 'btn option-button-item';
+                    btn.innerText = opt;
+                    btn.onclick = () => selectOption(btn, opt);
+                    optionsGrid.appendChild(btn);
+                });
+                answerArea.appendChild(optionsGrid);
+            } else if (currentQ.type === "text") {
+                let input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'textAnswer';
+                input.placeholder = 'Type your answer here...';
+                input.oninput = () => {
+                    selectedAnswer = input.value.trim();
+                    confirmBtn.style.display = selectedAnswer.length > 0 ? 'block' : 'none';
+                };
+                answerArea.appendChild(input);
+            }
+        }
+
+        function selectOption(clickedBtn, value) {
+            document.querySelectorAll('.option-button-item').forEach(b => b.classList.remove('selected'));
+            clickedBtn.classList.add('selected');
+            selectedAnswer = value;
+            confirmBtn.style.display = 'block';
+            errorMsg.style.display = 'none';
+        }
+
+        function processConfirm() {
+            let currentQ = questions[currentQuestionIndex];
+            if (selectedAnswer.toLowerCase() === currentQ.correct.toLowerCase()) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    showGiftBox();
+                }
+            } else {
+                cardContainer.classList.remove('vibrate');
+                void cardContainer.offsetWidth; 
+                cardContainer.classList.add('vibrate');
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function showGiftBox() {
+            quizBox.style.display = 'none';
+            giftBox.style.display = 'block';
+            cardContainer.style.borderColor = '#00ffcc';
+        }
+
+        function openSurprise() {
+            giftBox.style.display = 'none';
+            surpriseBox.style.display = 'block';
+            cardContainer.style.borderColor = '#ff2a6d';
+            cardContainer.style.boxShadow = '0 25px 60px rgba(255, 42, 109, 0.3)';
+            
+            startBallAnimation();
+            fireMoreConfetti();
+        }
+
+        function fireMoreConfetti() {
+            if (animationActive) {
+                for (let i = 0; i < 25; i++) {
+                    let extraBall = new Ball(Math.random() * canvas.width, -10, true);
+                    extraBall.speedY = Math.random() * 3 + 2; 
+                    balls.push(extraBall);
+                }
+            }
+
+            var end = Date.now() + 1500;
+            (function frame() {
+                confetti({ particleCount: 4, angle: 60, spread: 60, origin: { x: 0, y: 0.85 }, colors: ['#ff2a6d', '#05d9e8', '#ff5e3a'] });
+                confetti({ particleCount: 4, angle: 120, spread: 60, origin: { x: 1, y: 0.85 }, colors: ['#ff2a6d', '#05d9e8', '#ff5e3a'] });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
